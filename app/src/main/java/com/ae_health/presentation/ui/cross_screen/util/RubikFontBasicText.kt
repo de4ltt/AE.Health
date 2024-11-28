@@ -36,7 +36,7 @@ fun RubikFontBasicText(
         color = color,
         style = style
             .copy(
-                fontFamily = ExtendedTheme.extendedFonts.rubikFontFamily,
+                fontFamily = ExtendedTheme.extendedFonts,
             ),
         modifier = modifier
             .then(

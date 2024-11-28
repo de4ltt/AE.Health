@@ -22,7 +22,8 @@ private val DarkColorScheme = darkColorScheme(
     primaryContainer = DizzyBlue,
     secondary = Black,
     secondaryContainer = LightGray,
-    background = White
+    background = White,
+    surface = Transparent
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -30,7 +31,8 @@ private val LightColorScheme = lightColorScheme(
     primaryContainer = DizzyBlue,
     secondary = Black,
     secondaryContainer = LightGray,
-    background = White
+    background = White,
+    surface = Transparent
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),
@@ -43,10 +45,9 @@ private val LightColorScheme = lightColorScheme(
     */
 )
 
-val LocalExtendedFonts = staticCompositionLocalOf { ExtendedFonts() }
+val LocalExtendedFonts = staticCompositionLocalOf { extendedFonts }
 
-val extendedFonts = ExtendedFonts(
-    rubikFontFamily = FontFamily(
+val extendedFonts = FontFamily(
         Font(R.font.rubik_light, FontWeight.Light),
         Font(R.font.rubik_regular, FontWeight.W400),
         Font(R.font.rubik_medium, FontWeight.Medium),
@@ -54,7 +55,6 @@ val extendedFonts = ExtendedFonts(
         Font(R.font.rubik_bold, FontWeight.Bold),
         Font(R.font.rubik_black, FontWeight.Black)
     )
-)
 
 @Composable
 fun AEHealthTheme(
@@ -80,7 +80,7 @@ fun AEHealthTheme(
 }
 
 object ExtendedTheme {
-    val extendedFonts: ExtendedFonts
+    val extendedFonts: FontFamily
         @Composable
         @ReadOnlyComposable
         get() = LocalExtendedFonts.current

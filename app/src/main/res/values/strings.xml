@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AE.Health</string>
+    <string name="favourites">Favourites</string>
+    <string name="history">History</string>
+    <string name="schedule">Schedule</string>
+    <string name="profile">Profile</string>
+    <string name="search_for_med_org">Medical organizations nearby</string>
 </resources>

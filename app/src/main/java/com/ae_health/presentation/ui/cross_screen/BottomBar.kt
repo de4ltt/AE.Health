@@ -5,7 +5,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,24 +20,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import com.ae_health.presentation.model.event.ScreenUIEvent
+import com.ae_health.presentation.model.util.screenDestinationsRoutes
 import com.ae_health.presentation.theme.Shapes
 import com.ae_health.presentation.ui.theme.Dimens.SMALL_ICON
 import com.ae_health.presentation.ui.theme.Dimens.SMALL_ICON_PADDING
 import com.ae_health.presentation.ui.theme.ExtendedTheme
+import com.transport.ui.util.bounceClick
 
 
 @Composable
 fun BottomBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    curRoute: Routes,
+    navigate: (ScreenUIEvent) -> Unit
 ) {
 
     LazyRow(
         modifier = modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+            .wrapContentHeight()
+            .background(ExtendedTheme.extendedColors.surface),
+        horizontalArrangement = Arrangement.SpaceAround
     ) {
-
+        items(screenDestinationsRoutes) {
+            it.bottomIcon?.let { icon ->
+                BottomBarIcon(
+                    isActive = it.route == curRoute,
+                    icon = icon,
+                    onClick = { navigate(ScreenUIEvent.ChangeCurrentDestination(it.route)) }
+                )
+            }
+        }
     }
 }
 
@@ -47,7 +60,8 @@ fun BottomBar(
 fun BottomBarIcon(
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int,
-    isActive: Boolean = false
+    isActive: Boolean = false,
+    onClick: () -> Unit
 ) {
 
     val iconColor by animateColorAsState(
@@ -62,12 +76,17 @@ fun BottomBarIcon(
 
     Box(
         modifier = modifier
-            .fillMaxHeight()
+            .fillMaxHeight(0.08f)
             .wrapContentWidth()
             .clip(Shapes.BOTTOM_ICON_ROUNDED)
-            .background(barColor),
+            .background(barColor)
+            .bounceClick(
+                enabled = !isActive,
+                onClick = { onClick() }
+            ),
         contentAlignment = Alignment.TopCenter
     ) {
+
         Icon(
             modifier = Modifier
                 .padding(
@@ -81,5 +100,4 @@ fun BottomBarIcon(
             contentDescription = null
         )
     }
-
 }

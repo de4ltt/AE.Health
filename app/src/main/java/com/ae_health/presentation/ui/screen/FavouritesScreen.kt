@@ -5,7 +5,6 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun FavouritesScreen(
-    navHostController: NavHostController
 ) {
 
 }

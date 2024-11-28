@@ -5,7 +5,6 @@ import androidx.navigation.NavHostController
 
 @Composable
 fun HistoryScreen(
-    navHostController: NavHostController
 ) {
 
 }
