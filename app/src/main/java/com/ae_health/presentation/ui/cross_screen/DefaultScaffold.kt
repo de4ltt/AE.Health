@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.ae_health.presentation.model.event.ScreenUIEvent
 import com.ae_health.presentation.model.state.ScreenUIState
-import com.ae_health.presentation.model.util.asScreenDestinations
 import com.ae_health.presentation.ui.theme.Dimens.DEFAULT_SPACING
 import com.ae_health.presentation.ui.theme.Dimens.TOP_PADDING
 
@@ -31,7 +30,7 @@ fun DefaultScaffold(
         ) {
 
             TopBar(
-                destination = screenUIState.curDestination.asScreenDestinations,
+                destination = screenUIState.curDestination,
                 state = screenUIState,
                 onEvent = onEvent
             )
@@ -42,7 +41,7 @@ fun DefaultScaffold(
 
         BottomBar(
             navigate = onEvent,
-            curRoute = screenUIState.curDestination
+            curDestination = screenUIState.curDestination
         )
     }
 }
