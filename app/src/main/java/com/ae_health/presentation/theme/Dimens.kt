@@ -8,6 +8,8 @@ object Dimens {
     val TEXT_SPACING: Dp = 5.dp
 
     val ICON: Dp = 60.dp
+    val SMALL_ICON = 30.dp
+    val SMALL_ICON_PADDING = 10.dp
 
     val ICON_RADIUS: Dp = 10.dp
 }
