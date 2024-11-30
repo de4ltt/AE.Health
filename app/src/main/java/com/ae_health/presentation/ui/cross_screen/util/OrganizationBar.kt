@@ -1,4 +1,4 @@
-package com.ae_health.presentation.ui.cross_screen
+package com.ae_health.presentation.ui.cross_screen.util
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -18,77 +18,84 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.ae_health.R
+import com.ae_health.presentation.model.Organization
 import com.ae_health.presentation.theme.Shapes
 import com.ae_health.presentation.theme.TextUnits
-import com.ae_health.presentation.ui.cross_screen.util.RubikFontBasicText
 import com.ae_health.presentation.ui.theme.Dimens.DEFAULT_SPACING
 import com.ae_health.presentation.ui.theme.Dimens.ICON
 import com.ae_health.presentation.ui.theme.Dimens.TEXT_SPACING
 import com.ae_health.presentation.ui.theme.ExtendedTheme
-import com.ae_health.presentation.ui.theme.Red
+import com.transport.ui.util.bounceClick
 
 enum class OrganizationType(
-    @DrawableRes val icon: Int? = null,
-    @StringRes val typeName: Int? = null
+    @DrawableRes val icon: Int = R.drawable.pharmacy,
+    @StringRes val typeName: Int = R.string.medical_institution
 ) {
-    UNKNOWN,
+    DEFAULT,
     PHARMACY,
-    HOSPITAL,
-    POLYCLINIC,
-    SPA
+    HOSPITAL(icon = R.drawable.hospital),
+    POLYCLINIC(icon = R.drawable.hospital),
+    SPA(icon = R.drawable.cocktail)
 }
 
 @Composable
 fun OrganizationBar(
     modifier: Modifier = Modifier,
-    title: String,
-    subtitle: String
+    organization: Organization,
+    onClick: () -> Unit
 ) {
 
-    val organizationType = OrganizationType.UNKNOWN
-
     Row(
-        modifier = modifier.wrapContentSize(),
-        horizontalArrangement = Arrangement.spacedBy(DEFAULT_SPACING)
+        modifier = modifier
+            .wrapContentHeight()
+            .bounceClick { onClick() },
+        horizontalArrangement = Arrangement.spacedBy(DEFAULT_SPACING),
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
-        OrganizationBarIcon(organizationType = organizationType)
+        OrganizationBarIcon(organizationType = organization.type)
 
-        OrganizationBarText(title = title, subtitle = subtitle)
+        OrganizationBarText(
+            title = organization.title,
+            subtitle = stringResource(organization.type.typeName)
+        )
     }
 }
 
 @Composable
-fun OrganizationBarIcon(
+private fun OrganizationBarIcon(
     modifier: Modifier = Modifier,
-    organizationType: OrganizationType = OrganizationType.UNKNOWN
+    organizationType: OrganizationType = OrganizationType.DEFAULT
 ) {
+
     Box(
         modifier = modifier
-            .aspectRatio(1f)
+            .wrapContentSize()
             .clip(Shapes.ICON_ROUNDED)
             .size(ICON)
-            .background(color = Red),
+            .aspectRatio(1f)
+            .background(color = ExtendedTheme.extendedColors.secondaryContainer),
         contentAlignment = Alignment.Center
     ) {
-        organizationType.icon?.let {
+        organizationType.icon.let {
 
             Icon(
-                modifier = Modifier
-                    .padding(15.dp)
-                    .fillMaxSize(),
+                modifier = Modifier.padding(15.dp),
                 painter = painterResource(id = it),
-                contentDescription = null
+                contentDescription = null,
+                tint = ExtendedTheme.extendedColors.primary
             )
         }
     }
 }
 
 @Composable
-fun OrganizationBarText(
+private fun OrganizationBarText(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String? = null
@@ -110,7 +117,7 @@ fun OrganizationBarText(
 
         subtitle?.let {
             RubikFontBasicText(
-                text = title,
+                text = it,
                 style = TextStyle(
                     fontWeight = FontWeight.Normal,
                     fontSize = TextUnits.BAR_SUBTITLE,

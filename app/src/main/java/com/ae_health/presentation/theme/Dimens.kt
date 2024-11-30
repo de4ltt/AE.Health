@@ -4,7 +4,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 object Dimens {
+    val LARGE_SPACING: Dp = 25.dp
     val DEFAULT_SPACING: Dp = 15.dp
+    val MEDIUM_SPACING: Dp = 10.dp
+
     val TEXT_SPACING: Dp = 5.dp
     val TOP_PADDING = 40.dp
 

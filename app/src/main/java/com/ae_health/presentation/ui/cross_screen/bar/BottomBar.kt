@@ -1,4 +1,4 @@
-package com.ae_health.presentation.ui.cross_screen
+package com.ae_health.presentation.ui.cross_screen.bar
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
@@ -34,7 +34,7 @@ import com.transport.ui.util.bounceClick
 fun BottomBar(
     modifier: Modifier = Modifier,
     curDestination: ScreenDestinations,
-    navigate: (ScreenUIEvent) -> Unit
+    onEvent: (ScreenUIEvent) -> Unit
 ) {
 
     val entries = ScreenDestinations.entries.toList()
@@ -51,7 +51,7 @@ fun BottomBar(
                 BottomBarIcon(
                     isActive = it == curDestination,
                     icon = icon,
-                    onClick = { navigate(ScreenUIEvent.ChangeCurrentDestination(it.route)) }
+                    onClick = { onEvent(ScreenUIEvent.ChangeCurrentDestination(it)) }
                 )
             }
         }

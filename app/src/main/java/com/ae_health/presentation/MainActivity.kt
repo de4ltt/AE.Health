@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.ae_health.presentation.model.event.ScreenUIEvent
 import com.ae_health.presentation.model.util.ScreenDestinations
 import com.ae_health.presentation.ui.cross_screen.DefaultScaffold
 import com.ae_health.presentation.ui.screen.FavouritesScreen
@@ -33,12 +34,31 @@ class MainActivity : ComponentActivity() {
                 DefaultScaffold(
                     screenUIState = screenUIState,
                     onEvent = mainViewModel::onEvent
-                ) {
+                ) { modifier ->
 
                     when (screenUIState.curDestination) {
-                        ScreenDestinations.FAVOURITES -> FavouritesScreen()
-                        ScreenDestinations.HISTORY -> HistoryScreen()
-                        ScreenDestinations.HOME -> HomeScreen()
+                        ScreenDestinations.FAVOURITES -> FavouritesScreen(
+                            modifier = modifier,
+                            state = screenUIState,
+                            onEvent = mainViewModel::onEvent
+                        )
+
+                        ScreenDestinations.HISTORY -> HistoryScreen(
+                            modifier = modifier,
+                            state = screenUIState,
+                            onShowOrganization = {
+                                mainViewModel.onEvent(
+                                    ScreenUIEvent.ShowOrganization(it)
+                                )
+                            }
+                        )
+
+                        ScreenDestinations.HOME -> HomeScreen(
+                            modifier = modifier,
+                            state = screenUIState,
+                            onEvent = mainViewModel::onEvent
+                        )
+
                         ScreenDestinations.PROFILE -> ProfileScreen()
                         ScreenDestinations.SCHEDULE -> ScheduleScreen()
                     }
