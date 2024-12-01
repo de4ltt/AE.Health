@@ -137,8 +137,10 @@ fun AddFavAppointBottomSheet(
                         } + " " + stringResource(R.string.at_time).lowercase() + " ${time.hour}:${time.minute}"
 
                         OrganizationBar(
+                            modifier = Modifier.fillMaxWidth(),
                             organization = appointment.organization,
-                            onClick = {}
+                            onClick = {},
+                            isClickable = false
                         )
 
                         DatePickerBar(
@@ -178,6 +180,7 @@ fun AddFavAppointBottomSheet(
                         val background = ExtendedTheme.extendedColors.background
 
                         AppButtonText(
+                            modifier = Modifier.fillMaxWidth(),
                             color = { primary },
                             titleColor = { background },
                             title = R.string.save,

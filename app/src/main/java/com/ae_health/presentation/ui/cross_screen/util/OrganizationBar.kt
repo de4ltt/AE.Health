@@ -47,14 +47,16 @@ enum class OrganizationType(
 fun OrganizationBar(
     modifier: Modifier = Modifier,
     organization: Organization,
+    isClickable: Boolean = true,
     onClick: () -> Unit,
-    onHold: () -> Unit = {}
+    onHold: () -> Unit = {},
 ) {
 
     Row(
         modifier = modifier
             .wrapContentHeight()
             .bounceClick(
+                enabled = isClickable,
                 onClick = onClick,
                 onHold = onHold
             ),
