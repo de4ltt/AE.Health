@@ -2,7 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.compose.compiler)
-    kotlin("plugin.serialization") version "2.0.10"
+    id("com.google.devtools.ksp")
+    id("dagger.hilt.android.plugin")
+    id("androidx.room")
 }
 
 android {
@@ -24,7 +26,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -43,6 +46,9 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.15"
+    }
+    room {
+        schemaDirectory("$projectDir/schemas")
     }
     packaging {
         resources {
@@ -72,9 +78,16 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.androidx.lifecycle.runtime.compose)
 
-    //Navigation
-    implementation(libs.androidx.navigation.compose)
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
 
-    //Serialization
-    implementation(libs.kotlinx.serialization.json)
+/*    //Room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)*/
+
+    //Coil
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 }

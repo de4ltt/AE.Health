@@ -21,13 +21,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.ae_health.R
 import com.ae_health.presentation.model.Organization
 import com.ae_health.presentation.theme.Shapes
 import com.ae_health.presentation.theme.TextUnits
 import com.ae_health.presentation.ui.theme.Dimens.DEFAULT_SPACING
 import com.ae_health.presentation.ui.theme.Dimens.ICON
+import com.ae_health.presentation.ui.theme.Dimens.ICON_PADDING
 import com.ae_health.presentation.ui.theme.Dimens.TEXT_SPACING
 import com.ae_health.presentation.ui.theme.ExtendedTheme
 import com.transport.ui.util.bounceClick
@@ -37,23 +37,27 @@ enum class OrganizationType(
     @StringRes val typeName: Int = R.string.medical_institution
 ) {
     DEFAULT,
-    PHARMACY,
-    HOSPITAL(icon = R.drawable.hospital),
-    POLYCLINIC(icon = R.drawable.hospital),
-    SPA(icon = R.drawable.cocktail)
+    PHARMACY(typeName = R.string.pharmacies),
+    HOSPITAL(icon = R.drawable.hospital, typeName = R.string.hospitals),
+    POLYCLINIC(icon = R.drawable.hospital, typeName = R.string.polyclinics),
+    SPA(icon = R.drawable.cocktail, typeName = R.string.spa)
 }
 
 @Composable
 fun OrganizationBar(
     modifier: Modifier = Modifier,
     organization: Organization,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onHold: () -> Unit = {}
 ) {
 
     Row(
         modifier = modifier
             .wrapContentHeight()
-            .bounceClick { onClick() },
+            .bounceClick(
+                onClick = onClick,
+                onHold = onHold
+            ),
         horizontalArrangement = Arrangement.spacedBy(DEFAULT_SPACING),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -82,15 +86,12 @@ private fun OrganizationBarIcon(
             .background(color = ExtendedTheme.extendedColors.secondaryContainer),
         contentAlignment = Alignment.Center
     ) {
-        organizationType.icon.let {
-
-            Icon(
-                modifier = Modifier.padding(15.dp),
-                painter = painterResource(id = it),
-                contentDescription = null,
-                tint = ExtendedTheme.extendedColors.primary
-            )
-        }
+        Icon(
+            modifier = Modifier.padding(ICON_PADDING),
+            painter = painterResource(id = organizationType.icon),
+            contentDescription = null,
+            tint = ExtendedTheme.extendedColors.primary
+        )
     }
 }
 

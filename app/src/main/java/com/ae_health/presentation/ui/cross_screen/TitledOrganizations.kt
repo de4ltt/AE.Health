@@ -16,7 +16,8 @@ fun TitledOrganizations(
     modifier: Modifier = Modifier,
     organizations: List<Organization>,
     @StringRes title: Int,
-    onClick: (Organization) -> Unit
+    onClick: (Organization) -> Unit,
+    onHold: (Organization) -> Unit = {}
 ) {
 
     Column(
@@ -29,7 +30,8 @@ fun TitledOrganizations(
 
         LazyOrganizationsList(
             organizations = organizations,
-            onClick = onClick
+            onClick = onClick,
+            onHold = onHold
         )
     }
 }

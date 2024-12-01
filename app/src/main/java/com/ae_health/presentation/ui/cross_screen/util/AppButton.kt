@@ -5,8 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -21,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import com.ae_health.presentation.theme.Shapes
 import com.ae_health.presentation.theme.TextUnits
 import com.ae_health.presentation.ui.theme.Dimens.DEFAULT_SPACING
-import com.ae_health.presentation.ui.theme.Dimens.SMALL_ICON
 import com.ae_health.presentation.ui.theme.Dimens.SMALL_ICON_PADDING
 import com.transport.ui.util.bounceClick
 
@@ -36,6 +34,7 @@ fun AppButtonText(
 
     Box(
         modifier = modifier
+            .bounceClick { onClick() }
             .clip(Shapes.ICON_ROUNDED)
             .background(color.invoke())
             .bounceClick { onClick() },
@@ -67,23 +66,18 @@ fun AppButtonIcon(
 
     Box(
         modifier = modifier
-            .wrapContentWidth()
-            .clip(Shapes.ICON_ROUNDED)
-            .background(color.invoke())
             .bounceClick(
                 onClick = { onClick() }
-            ),
+            )
+            .wrapContentSize()
+            .clip(Shapes.ICON_ROUNDED)
+            .background(color.invoke()),
         contentAlignment = Alignment.TopCenter
     ) {
 
         Icon(
             modifier = Modifier
-                .padding(
-                    top = SMALL_ICON_PADDING,
-                    start = SMALL_ICON_PADDING,
-                    end = SMALL_ICON_PADDING
-                )
-                .size(SMALL_ICON),
+                .padding(SMALL_ICON_PADDING),
             painter = painterResource(id = icon),
             tint = iconColor,
             contentDescription = null

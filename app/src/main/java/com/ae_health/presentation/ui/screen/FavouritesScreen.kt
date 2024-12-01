@@ -16,6 +16,7 @@ fun FavouritesScreen(
     LazyOrganizationsList(
         modifier = modifier,
         organizations = state.favouriteOrganizations,
-        onClick = { onEvent(ScreenUIEvent.ShowOrganization(it)) }
+        onClick = { onEvent(ScreenUIEvent.ShowOrganization(it)) },
+        onHold = { onEvent(ScreenUIEvent.SwitchFavAppointBar(it)) }
     )
 }

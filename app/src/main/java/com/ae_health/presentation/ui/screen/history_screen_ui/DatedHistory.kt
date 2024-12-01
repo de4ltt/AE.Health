@@ -15,12 +15,14 @@ import java.time.LocalDate
 
 @Composable
 fun DatedHistory(
+    modifier: Modifier = Modifier,
     history: Map<LocalDate, List<Organization>>,
-    onShowOrganization: (Organization) -> Unit
+    onShowOrganization: (Organization) -> Unit,
+    onShowFavAppointBar: (Organization) -> Unit = {}
 ) {
 
     LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(DEFAULT_SPACING)
     ) {
 
@@ -37,7 +39,8 @@ fun DatedHistory(
 
                     OrganizationsList(
                         organizations = orgList,
-                        onClick = { onShowOrganization(it) }
+                        onClick = { onShowOrganization(it) },
+                        onHold = { onShowFavAppointBar(it) }
                     )
                 }
             }

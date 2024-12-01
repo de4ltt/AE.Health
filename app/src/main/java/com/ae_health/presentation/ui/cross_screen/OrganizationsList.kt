@@ -16,7 +16,8 @@ import com.ae_health.presentation.ui.theme.Dimens.MEDIUM_SPACING
 fun LazyOrganizationsList(
     modifier: Modifier = Modifier,
     organizations: List<Organization>,
-    onClick: (Organization) -> Unit
+    onClick: (Organization) -> Unit,
+    onHold: (Organization) -> Unit = {}
 ) {
 
     LazyColumn(
@@ -30,7 +31,8 @@ fun LazyOrganizationsList(
             OrganizationBar(
                 modifier = Modifier.fillMaxWidth(),
                 organization = it,
-                onClick = { onClick(it) }
+                onClick = { onClick(it) },
+                onHold = { onHold(it) }
             )
         }
     }
@@ -39,7 +41,8 @@ fun LazyOrganizationsList(
 @Composable
 fun OrganizationsList(
     organizations: List<Organization>,
-    onClick: (Organization) -> Unit
+    onClick: (Organization) -> Unit,
+    onHold: (Organization) -> Unit = {}
 ) {
 
     Column(
@@ -53,7 +56,8 @@ fun OrganizationsList(
             OrganizationBar(
                 modifier = Modifier.fillMaxWidth(),
                 organization = it,
-                onClick = { onClick(it) }
+                onClick = { onClick(it) },
+                onHold = { onHold(it) }
             )
         }
     }

@@ -1,5 +1,7 @@
 package com.ae_health.presentation.ui.cross_screen
 
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
@@ -21,7 +23,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import com.ae_health.R
 import com.ae_health.presentation.theme.Shapes.ICON_ROUNDED
 import com.ae_health.presentation.theme.TextUnits
@@ -32,9 +33,11 @@ import com.ae_health.presentation.ui.theme.extendedFonts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchBar(
+fun IconTextField(
     modifier: Modifier = Modifier,
     textValue: String,
+    @DrawableRes iconRes: Int = R.drawable.search_glass,
+    @StringRes onEmptyValue: Int = R.string.search_for_med_org,
     onValueChange: (String) -> Unit
 ) {
 
@@ -65,7 +68,7 @@ fun SearchBar(
 
             Icon(
                 modifier = Modifier.size(Dimens.SMALL_ICON),
-                painter = painterResource(id = R.drawable.search_glass),
+                painter = painterResource(id = iconRes),
                 tint = iconTint,
                 contentDescription = null,
             )
@@ -78,7 +81,7 @@ fun SearchBar(
                 Crossfade(textValue.isEmpty(), label = "") {
                     if (it) {
                         RubikFontBasicText(
-                            text = stringResource(id = R.string.search_for_med_org),
+                            text = stringResource(id = onEmptyValue),
                             style = TextStyle(
                                 color = ExtendedTheme.extendedColors.primaryContainer,
                                 fontSize = TextUnits.SEARCH,

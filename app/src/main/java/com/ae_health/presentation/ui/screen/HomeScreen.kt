@@ -1,5 +1,9 @@
 package com.ae_health.presentation.ui.screen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
@@ -27,12 +31,23 @@ fun HomeScreen(
     val organizations = if (isLatestShown) latestVisited else bestNearby
     val title = if (isLatestShown) R.string.latest_visited else R.string.best_nearby
 
-    TitledOrganizations(
-        modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight(),
-        organizations = organizations,
-        title = title,
-        onClick = { onEvent(ScreenUIEvent.ShowOrganization(it)) }
-    )
+    Column {
+
+        AnimatedVisibility(
+            visible = !state.isSearchActive,
+            enter = fadeIn(),
+            exit = fadeOut()
+        ) {
+
+            TitledOrganizations(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight(),
+                organizations = organizations,
+                title = title,
+                onClick = { onEvent(ScreenUIEvent.ShowOrganization(it)) },
+                onHold = { onEvent(ScreenUIEvent.SwitchFavAppointBar(it)) }
+            )
+        }
+    }
 }

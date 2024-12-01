@@ -10,11 +10,14 @@ import com.ae_health.presentation.ui.screen.history_screen_ui.DatedHistory
 fun HistoryScreen(
     modifier: Modifier = Modifier,
     state: ScreenUIState,
-    onShowOrganization: (Organization) -> Unit
+    onShowOrganization: (Organization) -> Unit,
+    onShowFavAppointBar: (Organization) -> Unit
 ) {
 
     DatedHistory(
+        modifier = modifier,
         history = state.historyOfVisitedOrganizations,
-        onShowOrganization = onShowOrganization
+        onShowOrganization = onShowOrganization,
+        onShowFavAppointBar = onShowFavAppointBar
     )
 }

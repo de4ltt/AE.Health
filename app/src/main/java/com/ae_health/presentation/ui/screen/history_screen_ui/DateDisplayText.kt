@@ -1,6 +1,5 @@
 package com.ae_health.presentation.ui.screen.history_screen_ui
 
-import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -9,8 +8,8 @@ import com.ae_health.R
 import com.ae_health.presentation.theme.TextUnits.BAR_SUBTITLE
 import com.ae_health.presentation.ui.cross_screen.util.RubikFontBasicText
 import com.ae_health.presentation.ui.theme.ExtendedTheme
+import com.ae_health.presentation.ui.util.stringRes
 import java.time.LocalDate
-import java.time.Month
 
 @Composable
 fun DateDisplayText(
@@ -45,20 +44,3 @@ fun DateDisplayText(
         color = { color }
     )
 }
-
-private val Month.stringRes
-    @StringRes
-    get(): Int = when (this) {
-        Month.JANUARY -> R.string.jan
-        Month.FEBRUARY -> R.string.feb
-        Month.MARCH -> R.string.mar
-        Month.APRIL -> R.string.apr
-        Month.MAY -> R.string.may
-        Month.JUNE -> R.string.jun
-        Month.JULY -> R.string.jul
-        Month.AUGUST -> R.string.aug
-        Month.SEPTEMBER -> R.string.sep
-        Month.OCTOBER -> R.string.oct
-        Month.NOVEMBER -> R.string.nov
-        Month.DECEMBER -> R.string.dec
-    }

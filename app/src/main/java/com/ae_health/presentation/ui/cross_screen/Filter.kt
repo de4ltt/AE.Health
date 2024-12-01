@@ -169,10 +169,10 @@ private fun FilterTileSmall(
 
     Box(
         modifier = modifier
+            .bounceClick { onClick() }
             .wrapContentSize()
             .clip(Shapes.ICON_ROUNDED)
-            .background(barColor)
-            .bounceClick { onClick() },
+            .background(barColor),
         contentAlignment = Alignment.Center
     ) {
         RubikFontBasicText(
@@ -207,10 +207,10 @@ private fun FilterTileLarge(
 
     Box(
         modifier = modifier
+            .bounceClick { onClick() }
             .wrapContentSize()
             .clip(Shapes.ICON_ROUNDED)
-            .background(barColor)
-            .bounceClick { onClick() },
+            .background(barColor),
         contentAlignment = Alignment.Center
     ) {
         RubikFontBasicText(
