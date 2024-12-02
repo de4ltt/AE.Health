@@ -2,6 +2,8 @@ package com.ae_health.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.ae_health.domain.use_case.util.AppUseCases
+import com.ae_health.presentation.mapper.toDomain
 import com.ae_health.presentation.model.Appointment
 import com.ae_health.presentation.model.Organization
 import com.ae_health.presentation.model.event.ScreenUIEvent
@@ -18,7 +20,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(): ViewModel() {
+class MainViewModel @Inject constructor(
+    private val appUseCases: AppUseCases
+) : ViewModel() {
 
     private val _screenUIState: MutableStateFlow<ScreenUIState> = MutableStateFlow(ScreenUIState())
     val screenUIState = _screenUIState.asStateFlow()
@@ -43,21 +47,25 @@ class MainViewModel @Inject constructor(): ViewModel() {
         is ScreenUIEvent.DeleteFavourite -> deleteFavourite(event.organization)
     }
 
-    private fun addFavourite(organization: Organization) = viewModelScope.launch(coroutineDispatcher) {
+    private fun addFavourite(organization: Organization) =
+        viewModelScope.launch(coroutineDispatcher) {
+            appUseCases.AddFavouriteUseCase(organization.toDomain())
+        }
 
-    }
+    private fun deleteFavourite(organization: Organization) =
+        viewModelScope.launch(coroutineDispatcher) {
+            appUseCases.DeleteFavouriteUseCase(organization.toDomain())
+        }
 
-    private fun deleteFavourite(organization: Organization) = viewModelScope.launch(coroutineDispatcher) {
+    private fun addAppointment(appointment: Appointment) =
+        viewModelScope.launch(coroutineDispatcher) {
+            appUseCases.AddAppointmentUseCase(appointment.toDomain())
+        }
 
-    }
-
-    private fun addAppointment(appointment: Appointment) = viewModelScope.launch(coroutineDispatcher) {
-
-    }
-
-    private fun deleteAppointment(appointment: Appointment) = viewModelScope.launch(coroutineDispatcher) {
-
-    }
+    private fun deleteAppointment(appointment: Appointment) =
+        viewModelScope.launch(coroutineDispatcher) {
+            appUseCases.DeleteAppointmentUseCase(appointment.toDomain())
+        }
 
     private fun idleSwitchFavAppointBar() = viewModelScope.launch(coroutineDispatcher) {
         _screenUIState.value = _screenUIState.value.copy(
@@ -71,11 +79,12 @@ class MainViewModel @Inject constructor(): ViewModel() {
         )
     }
 
-    private fun switchFavAppointBar(organization: Organization) = viewModelScope.launch(coroutineDispatcher) {
-        _screenUIState.value = _screenUIState.value.copy(
-            addFavAppointOrganization = organization
-        )
-    }
+    private fun switchFavAppointBar(organization: Organization) =
+        viewModelScope.launch(coroutineDispatcher) {
+            _screenUIState.value = _screenUIState.value.copy(
+                addFavAppointOrganization = organization
+            )
+        }
 
     private fun changeSearchInput(input: String) = viewModelScope.launch(coroutineDispatcher) {
         _screenUIState.value = _screenUIState.value.copy(

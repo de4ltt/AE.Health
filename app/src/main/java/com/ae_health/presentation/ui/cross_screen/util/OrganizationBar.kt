@@ -34,14 +34,20 @@ import com.transport.ui.util.bounceClick
 
 enum class OrganizationType(
     @DrawableRes val icon: Int = R.drawable.pharmacy,
-    @StringRes val typeName: Int = R.string.medical_institution
+    @StringRes val typeName: Int = R.string.medical_institution,
+    val amenity: String = "medical institution"
 ) {
     DEFAULT,
-    PHARMACY(typeName = R.string.pharmacies),
-    HOSPITAL(icon = R.drawable.hospital, typeName = R.string.hospitals),
-    POLYCLINIC(icon = R.drawable.hospital, typeName = R.string.polyclinics),
-    SPA(icon = R.drawable.cocktail, typeName = R.string.spa)
+    PHARMACY(typeName = R.string.pharmacies, amenity = "pharmacies"),
+    HOSPITAL(icon = R.drawable.hospital, typeName = R.string.hospitals, amenity = "hospitals"),
+    POLYCLINIC(icon = R.drawable.hospital, typeName = R.string.polyclinics, amenity = "clinics"),
+    SPA(icon = R.drawable.cocktail, typeName = R.string.spa, amenity = "spa")
 }
+
+val String.organizationType
+    get(): com.ae_health.presentation.ui.cross_screen.util.OrganizationType {
+
+    }
 
 @Composable
 fun OrganizationBar(

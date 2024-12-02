@@ -1,13 +1,10 @@
 package com.ae_health.presentation.model.state
 
 import com.ae_health.presentation.model.Organization
-import com.ae_health.presentation.model.util.DaySchedule
 import com.ae_health.presentation.model.util.Filter
 import com.ae_health.presentation.model.util.ScreenDestinations
-import com.ae_health.presentation.model.util.WorkSchedule
 import com.ae_health.presentation.ui.cross_screen.util.OrganizationType
 import java.time.LocalDate
-import java.time.LocalTime
 
 data class ScreenUIState(
     val curDestination: ScreenDestinations = ScreenDestinations.HOME,
@@ -32,45 +29,7 @@ val randomOrganization = listOf(
     Organization(
         title = "Organization №1 with a very-very-very long name so it wouldn't fit the line",
         type = OrganizationType.HOSPITAL,
-        workSchedule = WorkSchedule(
-            listOf(
-                DaySchedule(
-                    isActive = true,
-                    start = LocalTime.of(8, 0),
-                    end = LocalTime.of(17, 0)
-                ),
-                DaySchedule(
-                    isActive = true,
-                    start = LocalTime.of(8, 0),
-                    end = LocalTime.of(17, 0)
-                ),
-                DaySchedule(
-                    isActive = true,
-                    start = LocalTime.of(8, 0),
-                    end = LocalTime.of(17, 0)
-                ),
-                DaySchedule(
-                    isActive = true,
-                    start = LocalTime.of(8, 0),
-                    end = LocalTime.of(17, 0)
-                ),
-                DaySchedule(
-                    isActive = true,
-                    start = LocalTime.of(8, 0),
-                    end = LocalTime.of(17, 0)
-                ),
-                DaySchedule(
-                    isActive = true,
-                    start = LocalTime.of(8, 0),
-                    end = LocalTime.of(17, 0)
-                ),
-                DaySchedule(
-                    isActive = false,
-                    start = LocalTime.of(8, 0),
-                    end = LocalTime.of(17, 0)
-                )
-            )
-        ),
+        workSchedule = "Mo-Su 08:00-17:00",
         address = "г. Краснодар, ул. Селезнёва, д.34",
         phoneNumber = "+79788819289",
         comment = "Какое-то длинное описание. Как там... Lorem ipsum dolor... Я не пам'ятаю... Дiдусь старий вже...",
