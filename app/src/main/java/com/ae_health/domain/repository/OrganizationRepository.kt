@@ -7,13 +7,14 @@ import kotlinx.coroutines.flow.Flow
 interface OrganizationRepository {
 
     suspend fun searchOrganizations(
+        special: List<String>,
         amenities: List<String>,
         lat: Double,
         lon: Double,
         radius: Int = 300
     ): List<OrganizationDomain>
 
-    suspend fun getHistory(): Flow<List<Pair<String, OrganizationDomain>>>
+    suspend fun getHistory(): Flow<List<Pair<String, List<OrganizationDomain>>>>
 
     suspend fun getFavourite(): Flow<List<OrganizationDomain>>
 

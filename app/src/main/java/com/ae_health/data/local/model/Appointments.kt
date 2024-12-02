@@ -1,13 +1,14 @@
 package com.ae_health.data.local.model
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
     foreignKeys = [
         ForeignKey(
             entity = Organizations::class,
-            parentColumns = ["organizationId"],
+            parentColumns = ["id"],
             childColumns = ["organizationId"]
         )
     ]

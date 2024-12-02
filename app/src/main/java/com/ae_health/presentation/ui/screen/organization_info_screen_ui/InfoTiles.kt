@@ -24,7 +24,7 @@ fun InfoTiles(
 
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(DEFAULT_SPACING),
+        verticalArrangement = Arrangement.spacedBy(DEFAULT_SPACING)
     ) {
         organization.address?.let {
             item {
@@ -40,6 +40,16 @@ fun InfoTiles(
                 InfoTile(
                     infoCategory = InfoCategory.PHONE,
                     comment = it
+                )
+            }
+        }
+
+        organization.website?.let {
+            item {
+                InfoTile(
+                    infoCategory = InfoCategory.WEBSITE,
+                    comment = it,
+                    onClick = {}
                 )
             }
         }

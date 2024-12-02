@@ -11,40 +11,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.ae_health.presentation.model.Appointment
 import com.ae_health.presentation.model.Organization
-import com.ae_health.presentation.model.state.randomOrganization
 import com.ae_health.presentation.ui.screen.schedule_screen_ui.ScheduleCard
 import com.ae_health.presentation.ui.theme.Dimens.DEFAULT_SPACING
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScheduleScreen(
     modifier: Modifier = Modifier,
-    appointments: List<Appointment> = listOf(
-        Appointment(
-            dateTime = LocalDateTime.of(LocalDate.of(2024, 12, 23), LocalTime.of(14, 23)),
-            organization = randomOrganization[0],
-            room = "453",
-            specialist = "Евтухов А.П.",
-            comment = "Взаять с собой еды"
-        ),
-        Appointment(
-            dateTime = LocalDateTime.of(LocalDate.of(2024, 12, 23), LocalTime.of(14, 23)),
-            organization = randomOrganization[0],
-            room = "453",
-            specialist = "Евтухов А.П.",
-            comment = "Взаять с собой еды"
-        ),
-        Appointment(
-            dateTime = LocalDateTime.of(LocalDate.of(2024, 12, 23), LocalTime.of(14, 23)),
-            organization = randomOrganization[0],
-            room = "453",
-            specialist = "Евтухов А.П.",
-            comment = "Взаять с собой еды"
-        )
-    ),
+    appointments: List<Appointment>,
     showOrganization: (Organization) -> Unit
 ) {
 

@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 @Entity
 data class Organizations(
     @PrimaryKey
-    val organizationId: Long? = null,
+    val id: Long = 0,
     val name: String? = null,
     val type: String? = null,
     val workSchedule: String? = null,

@@ -1,7 +1,7 @@
 package com.ae_health.data.remote.model
 
 data class Organization(
-    val id: String?,
+    val id: String = "0",
     val name: String?,
     val type: String?,
     val latitude: Double?,

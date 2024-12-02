@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 fun Organizations.toDomain() = OrganizationDomain(
-    organizationId = organizationId,
+    organizationId = id,
     name = name,
     type = type,
     workSchedule = workSchedule,

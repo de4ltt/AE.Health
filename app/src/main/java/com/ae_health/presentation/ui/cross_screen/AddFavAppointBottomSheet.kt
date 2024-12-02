@@ -50,6 +50,7 @@ import java.time.LocalDateTime
 @Composable
 fun AddFavAppointBottomSheet(
     modifier: Modifier = Modifier,
+    isInFav: Boolean = false,
     organization: Organization? = null,
     onBack: () -> Unit,
     onAddFavourite: (Organization) -> Unit,
@@ -75,16 +76,18 @@ fun AddFavAppointBottomSheet(
                 if (!st)
                     Column(
                         modifier = Modifier
-                            .padding(LARGE_SPACING * 1.25f)
+                            .padding(vertical = LARGE_SPACING * 1.5f)
                             .fillMaxWidth()
                             .wrapContentHeight(),
-                        verticalArrangement = Arrangement.spacedBy(DEFAULT_SPACING),
+                        verticalArrangement = Arrangement.spacedBy(LARGE_SPACING),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
+                        val add_delete = stringResource(if (isInFav) R.string.delete_fav else R.string.add_to_fav)
+
                         RubikFontBasicText(
                             modifier = Modifier.bounceClick { onAddFavourite(it) },
-                            text = stringResource(R.string.add_to_fav),
+                            text = add_delete,
                             style = TextStyle(
                                 fontWeight = FontWeight.Bold,
                                 fontSize = TextUnits.BAR_TITLE,

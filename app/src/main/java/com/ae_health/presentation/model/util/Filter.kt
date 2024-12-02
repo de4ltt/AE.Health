@@ -10,10 +10,10 @@ data class Filter(
 
 val filters = listOf(
     Filter(R.string.open),
-    Filter(R.string.polyclinics),
-    Filter(R.string.hospitals),
+    Filter(R.string.polyclinic),
+    Filter(R.string.hospital),
     Filter(R.string.female_health),
     Filter(R.string.spa),
-    Filter(R.string.pharmacies),
+    Filter(R.string.pharmacy),
     Filter(R.string.time_24_7)
 )

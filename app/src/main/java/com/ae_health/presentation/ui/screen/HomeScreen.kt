@@ -22,8 +22,8 @@ fun HomeScreen(
     onEvent: (ScreenUIEvent) -> Unit
 ) {
 
-    val latestVisited = state.latestVisitedOrganizations
-    val bestNearby = state.curBestOrganizations
+    val latestVisited = state.latestVisitedOrganizations.takeLast(3)
+    val bestNearby = state.curBestOrganizations.takeLast(3)
 
     val isLatestShown =
         latestVisited.isNotEmpty() && Random(LocalTime.now().toSecondOfDay()).nextInt(0, 2) == 1

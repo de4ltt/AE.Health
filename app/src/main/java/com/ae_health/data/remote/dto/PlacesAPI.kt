@@ -15,20 +15,43 @@ interface DgisApi {
         @Query("fields") fields: String = "items.reviews,items.external_content",
         @Query("key") apiKey: String = "31668a73-5c1e-4e4d-9f22-55661a45ffd9"
     ): DgisResponse
+
+    @GET("items/geocode")
+    suspend fun getUserCity(
+        @Query("key") apiKey: String = "31668a73-5c1e-4e4d-9f22-55661a45ffd9",
+        @Query("type") type: String = "adm_div.city",
+        @Query("lat") lat: Double,
+        @Query("lon") lon: Double,
+    ): DgisResponse
+
+    @GET("items")
+    suspend fun getOrganizationCoordinates(
+        @Query("q") query: String,
+        @Query("fields") fields: String = "items.point",
+        @Query("key") apiKey: String = "31668a73-5c1e-4e4d-9f22-55661a45ffd9"
+    ): DgisResponse
 }
 
 data class DgisResponse(
-    val result: DgisResult
+    val result: DgisResult = DgisResult()
 )
 
 data class DgisResult(
-    val items: List<DgisItem>
+    val items: List<DgisItem> = emptyList()
 )
 
 data class DgisItem(
     val id: String?,
+    val full_name: String?,
+    val address_name: String?,
+    val point: DgisPoint?,
     val reviews: DgisRating?,
     val external_content: List<DgisExternalContent>?
+)
+
+data class DgisPoint(
+    val lat: Double?,
+    val lon: Double?
 )
 
 data class DgisRating(

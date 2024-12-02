@@ -46,6 +46,7 @@ import com.transport.ui.util.bounceClick
 fun Filter(
     modifier: Modifier = Modifier,
     state: ScreenUIState,
+    onSearch: () -> Unit,
     onClick: (Filter?) -> Unit
 ) {
 
@@ -141,7 +142,7 @@ fun Filter(
                         color = { buttonColor },
                         titleColor = { titleColor },
                         title = R.string.start_search,
-                        onClick = { }
+                        onClick = onSearch
                     )
                 }
             }

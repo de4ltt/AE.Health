@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey
     foreignKeys = [
         ForeignKey(
             entity = Organizations::class,
-            parentColumns = ["organizationId"],
+            parentColumns = ["id"],
             childColumns = ["organizationId"]
         )
     ]

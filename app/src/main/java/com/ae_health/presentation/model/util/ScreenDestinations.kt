@@ -23,8 +23,8 @@ enum class ScreenDestinations(
         bottomIcon = R.drawable.calendar,
         titleRes = R.string.schedule
     ),
-    PROFILE(
+/*    PROFILE(
         bottomIcon = R.drawable.user_circle,
         titleRes = R.string.profile
-    ),
+    ),*/
 }

@@ -4,7 +4,7 @@ import com.ae_health.data.local.model.Organizations
 import com.ae_health.domain.model.OrganizationDomain
 
 fun OrganizationDomain.toEntity() = Organizations(
-    organizationId = organizationId,
+    id = organizationId,
     name = name,
     type = type,
     workSchedule = workSchedule,

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import com.ae_health.presentation.model.Organization
 import com.ae_health.presentation.ui.cross_screen.ScreenTitle
 import com.ae_health.presentation.ui.screen.organization_info_screen_ui.BottomButtons
@@ -54,7 +55,7 @@ fun OrganizationInfoScreen(
                 ) {
 
                     ScreenTitle(
-                        title = it.title
+                        title = it.title.ifEmpty { stringResource(it.type.typeName) }
                     )
 
                     Column(

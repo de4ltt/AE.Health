@@ -3,6 +3,8 @@ package com.ae_health.presentation.ui.screen.organization_info_screen_ui.util
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +16,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,18 +46,25 @@ enum class InfoCategory(
     PHONE(iconRes = R.drawable.phone, titleRes = R.string.phone_number),
     RATING(iconRes = R.drawable.comments, titleRes = R.string.rating),
     ADDITIONAL_INFO(iconRes = R.drawable.information, titleRes = R.string.information),
-    SCHEDULE(iconRes = R.drawable.clock, titleRes = R.string.schedule)
+    SCHEDULE(iconRes = R.drawable.clock, titleRes = R.string.schedule),
+    WEBSITE(iconRes = R.drawable.globe, titleRes = R.string.website)
 }
 
 @Composable
 fun InfoTile(
     modifier: Modifier = Modifier,
     infoCategory: InfoCategory,
-    comment: String
+    comment: String,
+    onClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick
+            ),
         horizontalArrangement = Arrangement.spacedBy(DEFAULT_SPACING),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -68,7 +78,7 @@ fun InfoTile(
 @Composable
 fun InfoTile(
     modifier: Modifier = Modifier,
-    workSchedule: WorkSchedule
+    workSchedule: String
 ) {
     Row(
         modifier = modifier
@@ -82,7 +92,7 @@ fun InfoTile(
         InfoTileText(
             modifier = Modifier.padding(top = SMALL_ICON_PADDING),
             title = InfoCategory.SCHEDULE.titleRes,
-            comment = workSchedule.string
+            comment = workSchedule
         )
     }
 }

@@ -36,6 +36,7 @@ fun TopBar(
 
             Filter(
                 state = state,
+                onSearch = { onEvent(ScreenUIEvent.SearchForOrganizations) },
                 onClick = { onEvent(ScreenUIEvent.SwitchFilter(it)) }
             )
         }

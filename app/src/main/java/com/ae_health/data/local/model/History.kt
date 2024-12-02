@@ -8,12 +8,12 @@ import androidx.room.ForeignKey
     foreignKeys = [
         ForeignKey(
             entity = Organizations::class,
-            parentColumns = ["organizationId"],
+            parentColumns = ["id"],
             childColumns = ["organizationId"]
         )
     ]
 )
 data class History(
     val organizationId: Long,
-    val date: String?
+    val date: String
 )

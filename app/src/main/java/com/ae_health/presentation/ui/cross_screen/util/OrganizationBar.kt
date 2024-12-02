@@ -17,10 +17,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import coil3.compose.AsyncImage
 import com.ae_health.R
 import com.ae_health.presentation.model.Organization
 import com.ae_health.presentation.theme.Shapes
@@ -38,15 +40,19 @@ enum class OrganizationType(
     val amenity: String = "medical institution"
 ) {
     DEFAULT,
-    PHARMACY(typeName = R.string.pharmacies, amenity = "pharmacies"),
-    HOSPITAL(icon = R.drawable.hospital, typeName = R.string.hospitals, amenity = "hospitals"),
-    POLYCLINIC(icon = R.drawable.hospital, typeName = R.string.polyclinics, amenity = "clinics"),
+    PHARMACY(typeName = R.string.pharmacy, amenity = "pharmacies"),
+    HOSPITAL(icon = R.drawable.hospital, typeName = R.string.hospital, amenity = "hospitals"),
+    POLYCLINIC(icon = R.drawable.hospital, typeName = R.string.polyclinic, amenity = "clinics"),
     SPA(icon = R.drawable.cocktail, typeName = R.string.spa, amenity = "spa")
 }
 
 val String.organizationType
-    get(): com.ae_health.presentation.ui.cross_screen.util.OrganizationType {
-
+    get(): OrganizationType = when (this) {
+        "hospital" -> OrganizationType.HOSPITAL
+        "clinic" -> OrganizationType.POLYCLINIC
+        "pharmacy" -> OrganizationType.PHARMACY
+        "spa" -> OrganizationType.SPA
+        else -> OrganizationType.DEFAULT
     }
 
 @Composable
@@ -70,10 +76,10 @@ fun OrganizationBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        OrganizationBarIcon(organizationType = organization.type)
+        OrganizationBarIcon(organization = organization)
 
         OrganizationBarText(
-            title = organization.title,
+            title = organization.title.ifEmpty { stringResource(organization.type.typeName) },
             subtitle = stringResource(organization.type.typeName)
         )
     }
@@ -82,10 +88,22 @@ fun OrganizationBar(
 @Composable
 private fun OrganizationBarIcon(
     modifier: Modifier = Modifier,
-    organizationType: OrganizationType = OrganizationType.DEFAULT
+    organization: Organization
 ) {
 
-    Box(
+    organization.imageUrl?.let {
+        AsyncImage(
+            model = it,
+            contentDescription = "",
+            modifier = modifier
+                .wrapContentSize()
+                .clip(Shapes.ICON_ROUNDED)
+                .size(ICON)
+                .aspectRatio(1f)
+                .background(color = ExtendedTheme.extendedColors.secondaryContainer),
+            contentScale = ContentScale.FillBounds
+        )
+    } ?: Box(
         modifier = modifier
             .wrapContentSize()
             .clip(Shapes.ICON_ROUNDED)
@@ -96,7 +114,7 @@ private fun OrganizationBarIcon(
     ) {
         Icon(
             modifier = Modifier.padding(ICON_PADDING),
-            painter = painterResource(id = organizationType.icon),
+            painter = painterResource(id = organization.type.icon),
             contentDescription = null,
             tint = ExtendedTheme.extendedColors.primary
         )

@@ -5,7 +5,7 @@ import com.ae_health.data.remote.model.Organization
 
 fun Organization.toEntity(): Organizations =
     Organizations(
-        organizationId = id?.toLong(),
+        id = id.toLong(),
         name = name,
         type = type,
         workSchedule = openingHours,
