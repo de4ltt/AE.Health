@@ -1,8 +1,9 @@
 package com.ae_health.presentation.ui.screen
 
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -12,8 +13,6 @@ import com.ae_health.R
 import com.ae_health.presentation.model.event.ScreenUIEvent
 import com.ae_health.presentation.model.state.ScreenUIState
 import com.ae_health.presentation.ui.cross_screen.TitledOrganizations
-import java.time.LocalTime
-import kotlin.random.Random
 
 @Composable
 fun HomeScreen(
@@ -22,32 +21,45 @@ fun HomeScreen(
     onEvent: (ScreenUIEvent) -> Unit
 ) {
 
-    val latestVisited = state.latestVisitedOrganizations.takeLast(3)
-    val bestNearby = state.curBestOrganizations.takeLast(3)
+    val latestVisited = state.latestVisitedOrganizations.takeLast(7)
+    val bestNearby = state.curBestOrganizations.takeLast(7)
+    val foundOrganizations = state.foundOrganizations
+
+    val isSearchActive = state.isSearchActive
 
     val isLatestShown =
-        latestVisited.isNotEmpty() && Random(LocalTime.now().toSecondOfDay()).nextInt(0, 2) == 1
+        latestVisited.isNotEmpty()
 
-    val organizations = if (isLatestShown) latestVisited else bestNearby
-    val title = if (isLatestShown) R.string.latest_visited else R.string.best_nearby
+    val organizations = when {
+        isSearchActive && foundOrganizations.isNotEmpty() -> foundOrganizations
+        isLatestShown -> latestVisited
+        else -> bestNearby
+    }
+
+    val title = when {
+        isSearchActive && foundOrganizations.isNotEmpty() -> R.string.here_found
+        isLatestShown -> R.string.latest_visited
+        else -> R.string.best_nearby
+    }
 
     Column {
 
-        AnimatedVisibility(
-            visible = !state.isSearchActive,
-            enter = fadeIn(),
-            exit = fadeOut()
+        AnimatedContent(
+            targetState = organizations,
+            transitionSpec = { fadeIn().togetherWith(fadeOut()) },
+            label = ""
         ) {
 
-            TitledOrganizations(
-                modifier = modifier
-                    .fillMaxWidth()
-                    .wrapContentHeight(),
-                organizations = organizations,
-                title = title,
-                onClick = { onEvent(ScreenUIEvent.ShowOrganization(it)) },
-                onHold = { onEvent(ScreenUIEvent.SwitchFavAppointBar(it)) }
-            )
+            if (it.isNotEmpty())
+                TitledOrganizations(
+                    modifier = modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    organizations = organizations,
+                    title = title,
+                    onClick = { onEvent(ScreenUIEvent.ShowOrganization(it)) },
+                    onHold = { onEvent(ScreenUIEvent.SwitchFavAppointBar(it)) }
+                )
         }
     }
 }

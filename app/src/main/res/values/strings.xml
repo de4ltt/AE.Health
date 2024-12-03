@@ -59,4 +59,14 @@
     <string name="save">Save</string>
     <string name="website">Website</string>
     <string name="delete_fav">Remove from favourites</string>
+    <string name="here_found">Here is what we found</string>
+    <string name="dentist">Dentist</string>
+    <string name="blood_donation">Blood donation</string>
+    <string name="dispancer">Dispancer</string>
+    <string name="laboratory">Laboratory</string>
+    <string name="m150">150 m</string>
+    <string name="m500">500 m</string>
+    <string name="m1000">1 km</string>
+    <string name="m2000">2 km</string>
+    <string name="doctor">Doctor</string>
 </resources>

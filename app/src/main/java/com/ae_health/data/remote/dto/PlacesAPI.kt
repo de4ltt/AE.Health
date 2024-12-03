@@ -5,6 +5,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+private val api_Key = "76f66567-9425-424d-b1a4-3b0d7a513c8c"
+
 interface DgisApi {
     @GET("items")
     suspend fun getOrganizationRating(
@@ -13,12 +15,12 @@ interface DgisApi {
         @Query("lon") lon: Double,
         @Query("radius") radius: Int = 100,
         @Query("fields") fields: String = "items.reviews,items.external_content",
-        @Query("key") apiKey: String = "31668a73-5c1e-4e4d-9f22-55661a45ffd9"
+        @Query("key") apiKey: String = api_Key
     ): DgisResponse
 
     @GET("items/geocode")
     suspend fun getUserCity(
-        @Query("key") apiKey: String = "31668a73-5c1e-4e4d-9f22-55661a45ffd9",
+        @Query("key") apiKey: String = api_Key,
         @Query("type") type: String = "adm_div.city",
         @Query("lat") lat: Double,
         @Query("lon") lon: Double,
@@ -28,7 +30,7 @@ interface DgisApi {
     suspend fun getOrganizationCoordinates(
         @Query("q") query: String,
         @Query("fields") fields: String = "items.point",
-        @Query("key") apiKey: String = "31668a73-5c1e-4e4d-9f22-55661a45ffd9"
+        @Query("key") apiKey: String = api_Key
     ): DgisResponse
 }
 

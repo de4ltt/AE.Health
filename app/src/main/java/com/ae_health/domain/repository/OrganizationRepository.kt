@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 interface OrganizationRepository {
 
     suspend fun searchOrganizations(
+        query: String?,
         special: List<String>,
         amenities: List<String>,
         lat: Double,

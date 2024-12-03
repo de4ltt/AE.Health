@@ -2,20 +2,17 @@ package com.ae_health.presentation
 
 import android.Manifest
 import android.app.Activity
-import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.core.app.ActivityCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -31,15 +28,40 @@ import com.ae_health.presentation.ui.screen.OrganizationInfoScreen
 import com.ae_health.presentation.ui.screen.ScheduleScreen
 import com.ae_health.presentation.ui.theme.AEHealthTheme
 import com.ae_health.presentation.viewmodel.MainViewModel
-import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
+    val mainViewModel: MainViewModel by viewModels()
+
+    fun requestLocationPermission() {
+        requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+    }
+
+    val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            onPermissionGranted()
+        } else {
+            onPermissionDenied()
+        }
+    }
+
+    fun onPermissionGranted() {
+        mainViewModel.fetchCurrentLocation(this)
+    }
+
+    fun onPermissionDenied() {
+        Log.e("Permissions", "Location permission denied")
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        requestLocationPermission()
 
         WindowCompat.setDecorFitsSystemWindows(window, false)
         window.hideSystemUi(extraAction = {
@@ -48,32 +70,6 @@ class MainActivity : ComponentActivity() {
         setDisplayCutoutMode()
 
         setContent {
-
-            val mainViewModel: MainViewModel by viewModels()
-
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                    1
-                )
-            } else {
-
-                val fusedLocationClient =
-                    LocationServices.getFusedLocationProviderClient(this)
-
-                val flag by remember {
-                    mutableStateOf(true)
-                }
-
-                LaunchedEffect(flag) {
-                    mainViewModel.checkTrueSetLocation(fusedLocationClient)
-                }
-            }
 
             AEHealthTheme {
 
@@ -150,8 +146,14 @@ class MainActivity : ComponentActivity() {
                     onAddAppointment = { mainViewModel.onEvent(ScreenUIEvent.AddAppointment(it)) }
                 )
             }
+
+
         }
+
+
     }
+
+
 
     private fun Window.hideSystemUi(extraAction: (WindowInsetsControllerCompat.() -> Unit)? = null) {
         WindowInsetsControllerCompat(this, this.decorView).let { controller ->

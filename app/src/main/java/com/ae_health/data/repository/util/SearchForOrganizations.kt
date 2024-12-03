@@ -8,6 +8,7 @@ import com.ae_health.data.remote.dto.overpassApi
 import com.ae_health.data.remote.model.Organization
 
 suspend fun fetchOrganizations(
+    query: String? = null,
     special: List<String> = emptyList(),
     amenities: List<String> = emptyList(),
     lat: Double,
@@ -15,10 +16,12 @@ suspend fun fetchOrganizations(
     radius: Int = 1000
 ): List<Organization> {
 
+    Log.d("SOJGBAJBGV", "1111123123123123")
+
     val overpassAmenities = amenities.joinToString("|").ifEmpty { "pharmacy|hospital|clinic|laboratory|doctor|dentist|blood_donation" }
 
     val overpassQuery =
-        "[out:json][timeout:10];nwr[\"amenity\"~\"^($overpassAmenities)\$\"](around:$radius, $lat, $lon);out body;>;out skel qt;"
+        "[out:json][timeout:10];nwr[\"healthcare\"~\"^($overpassAmenities)\$\"](around:$radius, $lat, $lon);out body;>;out skel qt;"
 
     var overpassResponse: OverpassResponse
 
@@ -84,6 +87,7 @@ suspend fun fetchOrganizations(
                     else null
                 } else null
             } catch (e: Exception) {
+                Log.d("SEX", "2GIS SEXUAL HARRASMENT\n$e")
                 ratingResponse = null
             }
 

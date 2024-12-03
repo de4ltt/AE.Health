@@ -8,12 +8,14 @@ class GetOrganizationsNearbyUseCase @Inject constructor(
 ) {
 
     suspend operator fun invoke(
+        query: String? = null,
         special: List<String> = emptyList(),
         amenities: List<String> = emptyList(),
         lat: Double,
         lon: Double,
         radius: Int
     ) = organizationRepository.searchOrganizations(
+        query = query,
         special = special,
         amenities = amenities,
         lat = lat,

@@ -43,7 +43,10 @@ enum class OrganizationType(
     PHARMACY(typeName = R.string.pharmacy, amenity = "pharmacies"),
     HOSPITAL(icon = R.drawable.hospital, typeName = R.string.hospital, amenity = "hospitals"),
     POLYCLINIC(icon = R.drawable.hospital, typeName = R.string.polyclinic, amenity = "clinics"),
-    SPA(icon = R.drawable.cocktail, typeName = R.string.spa, amenity = "spa")
+    LAB(typeName = R.string.laboratory, amenity = "laboratory"),
+    DOCTOR(typeName = R.string.doctor, amenity = "doctor"),
+    DENTIST(typeName = R.string.dentist, amenity = "dentist"),
+    BLOOD_DONATION(typeName = R.string.blood_donation, amenity = "blood_donation")
 }
 
 val String.organizationType
@@ -51,7 +54,10 @@ val String.organizationType
         "hospital" -> OrganizationType.HOSPITAL
         "clinic" -> OrganizationType.POLYCLINIC
         "pharmacy" -> OrganizationType.PHARMACY
-        "spa" -> OrganizationType.SPA
+        "laboratory" -> OrganizationType.LAB
+        "doctor" -> OrganizationType.DOCTOR
+        "dentist" -> OrganizationType.DENTIST
+        "blood_donation" -> OrganizationType.BLOOD_DONATION
         else -> OrganizationType.DEFAULT
     }
 

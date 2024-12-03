@@ -19,6 +19,7 @@ class OrganizationRepositoryImpl @Inject constructor(
 ) : OrganizationRepository {
 
     override suspend fun searchOrganizations(
+        query: String?,
         special: List<String>,
         amenities: List<String>,
         lat: Double,
@@ -27,6 +28,7 @@ class OrganizationRepositoryImpl @Inject constructor(
     ): List<OrganizationDomain> {
 
         val result = fetchOrganizations(
+            query = query,
             special = special,
             amenities = amenities,
             lat = lat,
