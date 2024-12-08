@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.ae_health.R
 import com.ae_health.presentation.ui.cross_screen.util.AppButtonIcon
 import com.ae_health.presentation.ui.cross_screen.util.AppButtonText
@@ -15,10 +16,15 @@ import com.ae_health.presentation.ui.theme.ExtendedTheme
 @Composable
 fun BottomButtons(
     modifier: Modifier,
+    isFavourite: Boolean,
     onHomeClick: () -> Unit,
     onRouteClick: () -> Unit,
-    onPhoneClick: () -> Unit
+    onHeartClick: () -> Unit
 ) {
+
+    val heartRes = if (isFavourite) R.drawable.heart_filled else R.drawable.heart
+
+    val context = LocalContext.current
 
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -48,8 +54,8 @@ fun BottomButtons(
         AppButtonIcon(
             color = { secondaryContainerColor },
             iconColor = { primaryColor },
-            icon = R.drawable.phone,
-            onClick = onPhoneClick
+            icon = heartRes,
+            onClick = onHeartClick
         )
     }
 }

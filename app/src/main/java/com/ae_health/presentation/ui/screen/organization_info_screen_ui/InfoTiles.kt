@@ -1,5 +1,7 @@
 package com.ae_health.presentation.ui.screen.organization_info_screen_ui
 
+import android.content.Intent
+import android.net.Uri
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -7,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import com.ae_health.R
 import com.ae_health.presentation.model.Organization
 import com.ae_health.presentation.ui.screen.organization_info_screen_ui.util.InfoCategory
@@ -22,6 +25,8 @@ fun InfoTiles(
     organization: Organization,
 ) {
 
+    val context = LocalContext.current
+
     LazyColumn(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(DEFAULT_SPACING)
@@ -30,7 +35,13 @@ fun InfoTiles(
             item {
                 InfoTile(
                     infoCategory = InfoCategory.ADDRESS,
-                    comment = it
+                    comment = it,
+                    onClick = {
+                        val uri = Uri.parse("geo:${organization.lat},${organization.lon}?q=$it")
+                        val mapIntent = Intent(Intent.ACTION_VIEW, uri)
+
+                        context.startActivity(mapIntent)
+                    }
                 )
             }
         }
@@ -39,7 +50,13 @@ fun InfoTiles(
             item {
                 InfoTile(
                     infoCategory = InfoCategory.PHONE,
-                    comment = it
+                    comment = it,
+                    onClick = {
+                        val uri = Uri.parse("tel:?q=$it")
+                        val mapIntent = Intent(Intent.ACTION_VIEW, uri)
+
+                        context.startActivity(mapIntent)
+                    }
                 )
             }
         }
@@ -49,7 +66,12 @@ fun InfoTiles(
                 InfoTile(
                     infoCategory = InfoCategory.WEBSITE,
                     comment = it,
-                    onClick = {}
+                    onClick = {
+                        val uri = Uri.parse(it)
+                        val mapIntent = Intent(Intent.ACTION_VIEW, uri)
+
+                        context.startActivity(mapIntent)
+                    }
                 )
             }
         }

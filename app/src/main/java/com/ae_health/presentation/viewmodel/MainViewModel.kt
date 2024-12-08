@@ -10,7 +10,9 @@ import com.ae_health.presentation.mapper.toDomain
 import com.ae_health.presentation.mapper.toPresentation
 import com.ae_health.presentation.model.Appointment
 import com.ae_health.presentation.model.Organization
+import com.ae_health.presentation.model.event.GPSEvent
 import com.ae_health.presentation.model.event.ScreenUIEvent
+import com.ae_health.presentation.model.state.GPSState
 import com.ae_health.presentation.model.state.ScreenUIState
 import com.ae_health.presentation.model.util.Filter
 import com.ae_health.presentation.model.util.FilterType
@@ -36,8 +38,16 @@ class MainViewModel @Inject constructor(
     private val _screenUIState = MutableStateFlow(ScreenUIState())
     val screenUIState = _screenUIState.asStateFlow()
 
+    private val _gpsState = MutableStateFlow(GPSState())
+    val gpsState = _gpsState.asStateFlow()
+
     private val coroutineDispatcher = Dispatchers.Default
     private var hasLoadedOrganizations = false
+
+    fun onEvent(event: GPSEvent) = when (event) {
+        GPSEvent.PermissionGranted -> permissionGranted()
+        GPSEvent.PermissionDenied -> permissionDenied()
+    }
 
     fun onEvent(event: ScreenUIEvent) {
         when (event) {
@@ -64,11 +74,21 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    private fun permissionGranted() = updateGPSState {
+        copy(isPermissionGranted = true)
+    }
+
+    private fun permissionDenied() = updateGPSState {
+        copy(isPermissionGranted = false)
+    }
+
     private suspend fun observeStateChanges() {
         withContext(coroutineDispatcher) {
             launch {
-                screenUIState.collectLatest { state ->
-                    state.userLocation?.let {
+                gpsState.collectLatest { state ->
+                    state.userPosition?.let {
+                        if (_screenUIState.value.historyOfVisitedOrganizations.isNotEmpty())
+                            hasLoadedOrganizations = true
                         if (!hasLoadedOrganizations) {
                             hasLoadedOrganizations = true
                             fetchOrganizationsNearby(it.latitude, it.longitude, 700)
@@ -96,8 +116,8 @@ class MainViewModel @Inject constructor(
             .addOnSuccessListener { location ->
                 if (location != null) {
                     viewModelScope.launch {
-                        _screenUIState.value = _screenUIState.value.copy(
-                            userLocation = location
+                        _gpsState.value = _gpsState.value.copy(
+                            userPosition = location
                         )
                     }
                 } else {
@@ -152,13 +172,15 @@ class MainViewModel @Inject constructor(
         updateUIState { copy(curBestOrganizations = organizations) }
     }
 
-    private fun addAppointment(appointment: Appointment) = viewModelScope.launch(coroutineDispatcher) {
-        appUseCases.AddAppointmentUseCase(appointment.toDomain())
-    }
+    private fun addAppointment(appointment: Appointment) =
+        viewModelScope.launch(coroutineDispatcher) {
+            appUseCases.AddAppointmentUseCase(appointment.toDomain())
+        }
 
-    private fun deleteAppointment(appointment: Appointment) = viewModelScope.launch(coroutineDispatcher) {
-        appUseCases.DeleteAppointmentUseCase(appointment.toDomain())
-    }
+    private fun deleteAppointment(appointment: Appointment) =
+        viewModelScope.launch(coroutineDispatcher) {
+            appUseCases.DeleteAppointmentUseCase(appointment.toDomain())
+        }
 
     private fun idleShowOrganization() = updateUIState {
         copy(shownOrganization = null)
@@ -181,8 +203,9 @@ class MainViewModel @Inject constructor(
 
     private fun searchForOrganizations() = viewModelScope.launch(coroutineDispatcher) {
         val state = _screenUIState.value
-        val lat = state.userLocation?.latitude
-        val lon = state.userLocation?.longitude
+        val gpsState = _gpsState.value
+        val lat = gpsState.userPosition?.latitude
+        val lon = gpsState.userPosition?.longitude
         val radius =
             state.curFilters.find { it.type == FilterType.DISTANCE }?.engName?.toIntOrNull() ?: 300
         val amenities = state.curFilters.filter { it.type == FilterType.TYPE }.map { it.engName }
@@ -191,7 +214,12 @@ class MainViewModel @Inject constructor(
 
         if (lat != null && lon != null) {
             val organizations = appUseCases.GetOrganizationsNearbyUseCase(
-                lat = lat, lon = lon, radius = radius, amenities = amenities, special = special, query = query
+                lat = lat,
+                lon = lon,
+                radius = radius,
+                amenities = amenities,
+                special = special,
+                query = query
             ).map { it.toPresentation() }
 
             updateUIState { copy(foundOrganizations = organizations) }
@@ -231,4 +259,9 @@ class MainViewModel @Inject constructor(
     private fun updateUIState(update: ScreenUIState.() -> ScreenUIState) {
         _screenUIState.value = _screenUIState.value.update()
     }
+
+    private fun updateGPSState(update: GPSState.() -> GPSState) =
+        viewModelScope.launch(coroutineDispatcher) {
+            _gpsState.value = _gpsState.value.update()
+        }
 }

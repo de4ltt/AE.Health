@@ -60,7 +60,7 @@ fun Filter(
             if (!it)
                 LazyRow(
                     modifier = modifier,
-                    contentPadding = PaddingValues(start = DEFAULT_SPACING),
+                    contentPadding = PaddingValues(horizontal = DEFAULT_SPACING),
                     horizontalArrangement = Arrangement.spacedBy(MEDIUM_SPACING)
                 ) {
                     item {

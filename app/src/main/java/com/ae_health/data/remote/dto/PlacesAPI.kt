@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-private val api_Key = "76f66567-9425-424d-b1a4-3b0d7a513c8c"
+private val api_Key = "3c439f09-d3f1-4b8c-8ea7-41ac7e313cc4"
 
 interface DgisApi {
     @GET("items")

@@ -17,15 +17,11 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.ae_health.presentation.model.event.GPSEvent
 import com.ae_health.presentation.model.event.ScreenUIEvent
-import com.ae_health.presentation.model.util.ScreenDestinations
 import com.ae_health.presentation.ui.cross_screen.AddFavAppointBottomSheet
 import com.ae_health.presentation.ui.cross_screen.DefaultScaffold
-import com.ae_health.presentation.ui.screen.FavouritesScreen
-import com.ae_health.presentation.ui.screen.HistoryScreen
-import com.ae_health.presentation.ui.screen.HomeScreen
 import com.ae_health.presentation.ui.screen.OrganizationInfoScreen
-import com.ae_health.presentation.ui.screen.ScheduleScreen
 import com.ae_health.presentation.ui.theme.AEHealthTheme
 import com.ae_health.presentation.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -51,10 +47,18 @@ class MainActivity : ComponentActivity() {
 
     fun onPermissionGranted() {
         mainViewModel.fetchCurrentLocation(this)
+        mainViewModel.onEvent(GPSEvent.PermissionGranted)
     }
 
     fun onPermissionDenied() {
+        mainViewModel.onEvent(GPSEvent.PermissionDenied)
         Log.e("Permissions", "Location permission denied")
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        requestLocationPermission()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,58 +78,26 @@ class MainActivity : ComponentActivity() {
             AEHealthTheme {
 
                 val screenUIState by mainViewModel.screenUIState.collectAsStateWithLifecycle()
+                val gpsState by mainViewModel.gpsState.collectAsStateWithLifecycle()
 
                 DefaultScaffold(
                     screenUIState = screenUIState,
+                    gpsState = gpsState,
                     onEvent = mainViewModel::onEvent
-                ) { modifier ->
-
-                    when (screenUIState.curDestination) {
-                        ScreenDestinations.FAVOURITES -> FavouritesScreen(
-                            modifier = modifier,
-                            state = screenUIState,
-                            onEvent = mainViewModel::onEvent
-                        )
-
-                        ScreenDestinations.HISTORY -> HistoryScreen(
-                            modifier = modifier,
-                            state = screenUIState,
-                            onShowOrganization = {
-                                mainViewModel.onEvent(
-                                    ScreenUIEvent.ShowOrganization(it)
-                                )
-                            },
-                            onShowFavAppointBar = {
-                                mainViewModel.onEvent(
-                                    ScreenUIEvent.SwitchFavAppointBar(it)
-                                )
-                            }
-                        )
-
-                        ScreenDestinations.HOME -> HomeScreen(
-                            modifier = modifier,
-                            state = screenUIState,
-                            onEvent = mainViewModel::onEvent
-                        )
-/*
-                        ScreenDestinations.PROFILE -> ProfileScreen()*/
-                        ScreenDestinations.SCHEDULE -> ScheduleScreen(
-                            modifier = modifier,
-                            appointments = screenUIState.appointments,
-                            showOrganization = {
-                                mainViewModel.onEvent(
-                                    ScreenUIEvent.ShowOrganization(
-                                        it
-                                    )
-                                )
-                            }
-                        )
-                    }
-
-                }
+                )
 
                 OrganizationInfoScreen(
                     organization = screenUIState.shownOrganization,
+                    isFavourite = screenUIState.favouriteOrganizations.contains(screenUIState.shownOrganization),
+                    onHeartClick = {
+
+                        val organization = screenUIState.shownOrganization
+                        organization?.let {
+                            if (screenUIState.favouriteOrganizations.contains(it))
+                                mainViewModel.onEvent(ScreenUIEvent.DeleteFavourite(it))
+                            else mainViewModel.onEvent(ScreenUIEvent.AddFavourite(it))
+                        }
+                    },
                     onBack = { mainViewModel.onEvent(ScreenUIEvent.IdleShowOrganization) }
                 )
 
@@ -152,7 +124,6 @@ class MainActivity : ComponentActivity() {
 
 
     }
-
 
 
     private fun Window.hideSystemUi(extraAction: (WindowInsetsControllerCompat.() -> Unit)? = null) {

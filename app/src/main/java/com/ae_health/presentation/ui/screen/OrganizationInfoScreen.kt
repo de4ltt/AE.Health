@@ -1,5 +1,7 @@
 package com.ae_health.presentation.ui.screen
 
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import com.ae_health.presentation.model.Organization
 import com.ae_health.presentation.ui.cross_screen.ScreenTitle
@@ -27,11 +30,22 @@ import com.ae_health.presentation.ui.theme.ExtendedTheme
 @Composable
 fun OrganizationInfoScreen(
     modifier: Modifier = Modifier,
+    isFavourite: Boolean,
     organization: Organization? = null,
+    onHeartClick: () -> Unit,
     onBack: () -> Unit
 ) {
 
     BackHandler { onBack() }
+
+    val context = LocalContext.current
+
+    val onRoute = {
+        val uri = Uri.parse("geo:?q=${organization?.lat},${organization?.lon}")
+        val mapIntent = Intent(Intent.ACTION_VIEW, uri)
+
+        context.startActivity(mapIntent)
+    }
 
     AnimatedVisibility(
         modifier = modifier
@@ -67,7 +81,8 @@ fun OrganizationInfoScreen(
 
                         Map(
                             lat = it.lat,
-                            lon = it.lon
+                            lon = it.lon,
+                            onClick = onRoute
                         )
 
                         InfoTiles(
@@ -80,8 +95,9 @@ fun OrganizationInfoScreen(
                 BottomButtons(
                     modifier = Modifier.fillMaxWidth().fillMaxHeight(0.08f).padding(horizontal = DEFAULT_SPACING),
                     onHomeClick = onBack,
-                    onRouteClick = {},
-                    onPhoneClick = {}
+                    isFavourite = isFavourite,
+                    onRouteClick = onRoute,
+                    onHeartClick = onHeartClick
                 )
             }
         }

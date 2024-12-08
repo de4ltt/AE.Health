@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.ui.Modifier
 import com.ae_health.R
 import com.ae_health.presentation.model.event.ScreenUIEvent
 import com.ae_health.presentation.model.state.ScreenUIState
+import com.ae_health.presentation.ui.cross_screen.NothingIsHere
 import com.ae_health.presentation.ui.cross_screen.TitledOrganizations
 
 @Composable
@@ -60,6 +62,7 @@ fun HomeScreen(
                     onClick = { onEvent(ScreenUIEvent.ShowOrganization(it)) },
                     onHold = { onEvent(ScreenUIEvent.SwitchFavAppointBar(it)) }
                 )
+            else NothingIsHere(modifier = Modifier.fillMaxSize())
         }
     }
 }

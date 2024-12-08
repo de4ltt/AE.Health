@@ -19,3 +19,14 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep class retrofit2.** { *; }
+-keep class okhttp3.** { *; }
+-dontwarn retrofit2.**
+-dontwarn okhttp3.**
+-keep class com.google.gson.** { *; }
+-dontwarn com.google.gson.**
+-keep class com.ae_health.data.remote.** { *; }
+
+-printusage usage.txt
+-printconfiguration configuration.txt

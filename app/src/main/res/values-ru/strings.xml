@@ -70,4 +70,7 @@
     <string name="m1000">1 км</string>
     <string name="m2000">2 км</string>
     <string name="doctor">Врач</string>
+    <string name="looking_for_you">Ищем Вас…</string>
+    <string name="enable_location">Включите геопозицию</string>
+    <string name="grant_permission">Выдайте доступ к местоположению</string>
 </resources>

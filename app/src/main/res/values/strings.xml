@@ -69,4 +69,8 @@
     <string name="m1000">1 km</string>
     <string name="m2000">2 km</string>
     <string name="doctor">Doctor</string>
+    <string name="looking_for_you">Looking for you…</string>
+    <string name="enable_location">Enable location</string>
+    <string name="grant_permission">Grant permission</string>
+    <string name="nothing_is_here">Nothing is here</string>
 </resources>

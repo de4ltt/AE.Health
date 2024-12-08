@@ -1,6 +1,5 @@
 package com.ae_health.presentation.model.state
 
-import android.location.Location
 import com.ae_health.presentation.model.Appointment
 import com.ae_health.presentation.model.Organization
 import com.ae_health.presentation.model.util.Filter
@@ -8,9 +7,6 @@ import com.ae_health.presentation.model.util.ScreenDestinations
 import java.time.LocalDate
 
 data class ScreenUIState(
-    //lat, lon
-    val isLocationPermissionGranted: Boolean = false,
-    val userLocation: Location? = null,
 
     val curDestination: ScreenDestinations = ScreenDestinations.HOME,
 
