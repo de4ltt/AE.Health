@@ -16,23 +16,16 @@ suspend fun fetchOrganizations(
     radius: Int = 1000
 ): List<Organization> {
 
-    Log.d("SOJGBAJBGV", "1111123123123123")
-
     val overpassAmenities = amenities.joinToString("|").ifEmpty { "pharmacy|hospital|clinic|laboratory|doctor|dentist|blood_donation" }
 
     val overpassQuery =
         "[out:json][timeout:10];nwr[\"healthcare\"~\"^($overpassAmenities)\$\"](around:$radius, $lat, $lon);out body;>;out skel qt;"
 
-    var overpassResponse: OverpassResponse
-
-    try {
-        overpassResponse = overpassApi.getOrganizations(overpassQuery)
+    val overpassResponse: OverpassResponse = try {
+        overpassApi.getOrganizations(overpassQuery)
     } catch (e: Exception) {
-        Log.d("SEX", "OVERPASS RESPONSE ERROR $e")
-        overpassResponse = OverpassResponse(elements = emptyList())
+        OverpassResponse(elements = emptyList())
     }
-
-    Log.d("ENGLAND", overpassResponse.elements.joinToString("\n"))
 
     val organizations = overpassResponse.elements.mapNotNull { element ->
         val name = element.tags?.get("name")
@@ -87,7 +80,6 @@ suspend fun fetchOrganizations(
                     else null
                 } else null
             } catch (e: Exception) {
-                Log.d("SEX", "2GIS SEXUAL HARRASMENT\n$e")
                 ratingResponse = null
             }
 

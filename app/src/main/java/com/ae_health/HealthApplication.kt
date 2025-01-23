@@ -16,7 +16,7 @@ class HealthApplication: Application() {
         db = Room.databaseBuilder(
             applicationContext,
             AppDatabase::class.java,
-            "diary.db"
+            "health.db"
         )
             .fallbackToDestructiveMigration()
             .build()

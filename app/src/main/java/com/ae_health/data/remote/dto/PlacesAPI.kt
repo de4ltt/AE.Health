@@ -1,11 +1,12 @@
 package com.ae_health.data.remote.dto
 
+import com.ae_health.BuildConfig
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-private val api_Key = "3c439f09-d3f1-4b8c-8ea7-41ac7e313cc4"
+private const val api_Key = BuildConfig.DGIS_API_KEY
 
 interface DgisApi {
     @GET("items")
@@ -65,8 +66,8 @@ data class DgisExternalContent(
     val main_photo_url: String?
 )
 
-val dgisRetrofit = Retrofit.Builder()
+val dgisRetrofit: Retrofit = Retrofit.Builder()
     .baseUrl("https://catalog.api.2gis.com/3.0/")
     .addConverterFactory(GsonConverterFactory.create())
     .build()
-val dgisApi = dgisRetrofit.create(DgisApi::class.java)
+val dgisApi: DgisApi = dgisRetrofit.create(DgisApi::class.java)
